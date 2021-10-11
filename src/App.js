@@ -62,39 +62,82 @@ function SignOut() {
 }
 
 
-function ChatRoom() {
-  const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(1);
 
-  const [messages] = useCollectionData(query, { idField: 'id' });
+function ChatRoom() {
+    const messagesRef = firestore.collection('messages');
+    const query = messagesRef.orderBy('createdAt', 'desc').limit(1);
+    const [messages] = useCollectionData(query, { idField: 'id' });
+    const { uid, photoURL } = auth.currentUser;
+    const addCup = () => {
+        let cups = messages[0].cups;
+        if (cups === 5){
+            return
+        } else if(!cups){
+            cups = 1
+        } else {
+            cups++
+        }
+        messagesRef.add({
+            cups,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid,
+            photoURL
+        })
+    }
+
+    const getFreeCup = () => {
+        let cups = messages[0].cups;
+        if (cups !== 5) return;
+        messagesRef.add({
+            cups: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid,
+            photoURL
+        })
+    }
 
   return (<>
     <main>
-
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-
-
     </main>
 
     <div className="btns-container">
-      <button className="btn">Add cup</button>
-      <button className="btn">Get free cup</button>
+      <button className="btn" disabled={messages? messages[0].cups === 5: false} onClick={addCup}>Add cup</button>
+      <button className="btn" disabled={messages? messages[0].cups !== 5: true} onClick={getFreeCup}>Get free cup</button>
     </div>
   </>)
 }
 
 
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+    const { cups, uid, photoURL } = props.message;
+    const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
-  return (<>
-    <div className={`message ${messageClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
-      <p>{text}</p>
-    </div>
-  </>)
+    const activeCups = []
+    for (let i = 0; i < 5; i++){
+        if (i>=cups){
+            activeCups.push(<span role={'img'} className={'half-transparent'} aria-label={'coffee cup'}>☕</span>)
+            continue
+        }
+        activeCups.push(<span role={'img'} aria-label={'coffee cup'}>☕</span>)
+    }
+
+
+    return (<>
+        <div className={`message ${messageClass}`}>
+            <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt={'profile'}/>
+            <p>
+                {cups === 5?
+
+                    <div>Congratulations! You can get a free cup whenever you want!</div>
+                    :
+                    <div>You need to get {5-cups} more cup{5-cups === 1? null: 's'} for a free coffee!</div>
+                }
+                {activeCups}
+            </p>
+        </div>
+    </>)
 }
 
 
