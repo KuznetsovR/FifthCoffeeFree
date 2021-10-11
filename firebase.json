@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "build",
+    "public": "public",
+    "site": "fifth-coffee-free-yeah",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -12,5 +13,11 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "functions": {
+    "source": "functions"
+  },
+  "database": {
+    "rules": "database.rules.json"
   }
 }
