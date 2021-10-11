@@ -36,54 +36,13 @@ body {
 main {
   padding: 10px;
   height: 80vh;
-  margin: 10vh 0 20px;
-  overflow-y: scroll;
+  margin-top: 10vh;
   display: flex;
   flex-direction: column;
 }
 
-main::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-main::-webkit-scrollbar-track {
-  background: #1e1e24;
-}
-
-main::-webkit-scrollbar-thumb {
-  background: #6649b8;
-}
-
-form {
-  height: 10vh;
-  position: fixed;
-  bottom: 0;
-  background-color: rgb(24, 23, 23);
-  width: 100%;
-  max-width: 728px;
-  display: flex;
-  font-size: 1.5rem;
-}
-
-form button {
-  width: 20%;
-  background-color: rgb(56, 56, 143);
-}
-
-
-input {
-  line-height: 1.5;
-  width: 100%;
-  font-size: 1.5rem;
-  background: rgb(58, 58, 58);
-  color: white;
-  outline: none;
-  border: none;
-  padding: 0 10px;
-}
-
 button {
-  background-color: #282c34; /* Green */
+  background-color: #282c34;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -106,9 +65,6 @@ button:disabled {
   max-width: 400px;
   margin: 0 auto;
 }
-
-
-
 
 ul, li {
   text-align: left;
@@ -152,13 +108,14 @@ img {
   border-radius: 50%;
   margin: 2px 5px;
 }
-
-
-
 .btns-container{
   display: flex;
   flex-direction: row;
 }
 .btn{
   width: 100%;
+  background-color: #1a1d22;
+}
+.half-transparent{
+  opacity: 50%;
 }
