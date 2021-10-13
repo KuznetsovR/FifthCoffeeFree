@@ -104,7 +104,7 @@ function ChatRoom() {
 
   return (<>
     <main>
-        <ChatMessage userData={userData} />
+        {userData? <ChatMessage userData={userData} />: null}
     </main>
 
     <div className="btns-container">
