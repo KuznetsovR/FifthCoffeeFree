@@ -75,12 +75,18 @@ function SignOut() {
 function ChatRoom() {
     const { uid } = auth.currentUser;
     const doc = firestore.collection('users').doc(uid)
-    const message = doc.get().then(doc => {
-        return doc.data()
+
+    const message = doc.get();
+
+    message.then(doc => {
+      const userData = doc.data();
+      console.log(userData);
+      addCup(userData);
+      // return doc.data()
     })
-    console.log(message)
-    const addCup = () => {
-        let cups = message?.cups;
+
+    const addCup = (userData) => {
+        let cups = userData?.cups;
         if (cups === 5){
             return
         } else if(!cups){
@@ -89,19 +95,25 @@ function ChatRoom() {
             cups++
         }
         doc.set({
-            ...message,
+            ...userData,
             cups
         })
     }
 
     const getFreeCup = () => {
-        let cups = message.cups;
-        if (cups !== 5) return;
-        doc.set({
-            ...message,
-            cups: 0,
-            freeCupsGot: message.freeCupsGot + 1
+
+        doc.get().then(doc => {
+          const userData = doc.data();
+          let cups = userData.cups;
+          if (cups !== 5) return;
+          doc.set({
+              ...userData,
+              cups: 0,
+              freeCupsGot: userData.freeCupsGot + 1
+          })
         })
+
+        
     }
 
   return (<>
