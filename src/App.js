@@ -6,7 +6,6 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
     apiKey: "AIzaSyD8pk8gba4qmoQdUu-6teuxoAIzzpsAMPI",
@@ -42,10 +41,20 @@ function App() {
 }
 
 function SignIn() {
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  }
+    const signInWithGoogle = async () => {
+        const usersRef = firestore.collection('users');
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const loginInfo = await auth.signInWithPopup(provider);
+        const { uid, photoURL } = auth.currentUser;
+
+        if (loginInfo.additionalUserInfo.isNewUser) await usersRef
+            .doc(uid).set({
+                uid,
+                photoURL,
+                cups: 0,
+                freeCupsGot: 0
+            })
+    }
 
   return (
     <>
@@ -64,12 +73,14 @@ function SignOut() {
 
 
 function ChatRoom() {
-    const messagesRef = firestore.collection('messages');
-    const query = messagesRef.orderBy('createdAt', 'desc').limit(1);
-    const [messages] = useCollectionData(query, { idField: 'id' });
-    const { uid, photoURL } = auth.currentUser;
+    const { uid } = auth.currentUser;
+    const doc = firestore.collection('users').doc(uid)
+    const message = doc.get().then(doc => {
+        return doc.data()
+    })
+    console.log(message)
     const addCup = () => {
-        let cups = messages[0].cups;
+        let cups = message?.cups;
         if (cups === 5){
             return
         } else if(!cups){
@@ -77,33 +88,30 @@ function ChatRoom() {
         } else {
             cups++
         }
-        messagesRef.add({
-            cups,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            uid,
-            photoURL
+        doc.set({
+            ...message,
+            cups
         })
     }
 
     const getFreeCup = () => {
-        let cups = messages[0].cups;
+        let cups = message.cups;
         if (cups !== 5) return;
-        messagesRef.add({
+        doc.set({
+            ...message,
             cups: 0,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            uid,
-            photoURL
+            freeCupsGot: message.freeCupsGot + 1
         })
     }
 
   return (<>
     <main>
-      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+        <ChatMessage message={message} />
     </main>
 
     <div className="btns-container">
-      <button className="btn" disabled={messages? messages[0].cups === 5: false} onClick={addCup}>Add cup</button>
-      <button className="btn" disabled={messages? messages[0].cups !== 5: true} onClick={getFreeCup}>Get free cup</button>
+      <button className="btn" disabled={message?.cups === 5} onClick={addCup}>Add cup</button>
+      <button className="btn" disabled={message?.cups !== 5} onClick={getFreeCup}>Get free cup</button>
     </div>
   </>)
 }
