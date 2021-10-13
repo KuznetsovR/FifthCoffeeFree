@@ -76,9 +76,9 @@ function SignOut() {
 function ChatRoom() {
     const { uid } = auth.currentUser;
     const doc = firestore.collection('users').doc(uid)
-    const [message] = useDocumentData(doc);
+    const [userData] = useDocumentData(doc);
     const addCup = () => {
-        let cups = message?.cups;
+        let cups = userData?.cups;
         if (cups === 5){
             return
         } else if(!cups){
@@ -87,36 +87,36 @@ function ChatRoom() {
             cups++
         }
         doc.set({
-            ...message,
+            ...userData,
             cups
         })
     }
 
     const getFreeCup = () => {
-        let cups = message.cups;
+        let cups = userData.cups;
         if (cups !== 5) return;
         doc.set({
-            ...message,
+            ...userData,
             cups: 0,
-            freeCupsGot: message.freeCupsGot + 1
+            freeCupsGot: userData.freeCupsGot + 1
         })
     }
 
   return (<>
     <main>
-        {message? <ChatMessage message={message} />: null}
+        <ChatMessage userData={userData} />
     </main>
 
     <div className="btns-container">
-      <button className="btn" disabled={message?.cups === 5} onClick={addCup}>Add cup</button>
-      <button className="btn" disabled={message?.cups !== 5} onClick={getFreeCup}>Get free cup</button>
+      <button className="btn" disabled={userData?.cups === 5} onClick={addCup}>Add cup</button>
+      <button className="btn" disabled={userData?.cups !== 5} onClick={getFreeCup}>Get free cup</button>
     </div>
   </>)
 }
 
 
 function ChatMessage(props) {
-    const { cups, uid, photoURL } = props.message;
+    const { cups, uid, photoURL } = props.userData;
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
 
