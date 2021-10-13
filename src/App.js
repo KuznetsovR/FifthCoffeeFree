@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
     apiKey: "AIzaSyD8pk8gba4qmoQdUu-6teuxoAIzzpsAMPI",
@@ -75,10 +76,7 @@ function SignOut() {
 function ChatRoom() {
     const { uid } = auth.currentUser;
     const doc = firestore.collection('users').doc(uid)
-    const message = doc.get().then(doc => {
-        return doc.data()
-    })
-    console.log(message)
+    const [message] = useDocumentData(doc);
     const addCup = () => {
         let cups = message?.cups;
         if (cups === 5){
@@ -106,7 +104,7 @@ function ChatRoom() {
 
   return (<>
     <main>
-        <ChatMessage message={message} />
+        {message? <ChatMessage message={message} />: null}
     </main>
 
     <div className="btns-container">
