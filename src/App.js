@@ -8,15 +8,9 @@ import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 
-firebase.initializeApp({
-    apiKey: "AIzaSyD8pk8gba4qmoQdUu-6teuxoAIzzpsAMPI",
-    authDomain: "fifth-coffee-free.firebaseapp.com",
-    projectId: "fifth-coffee-free",
-    storageBucket: "fifth-coffee-free.appspot.com",
-    messagingSenderId: "367578660753",
-    appId: "1:367578660753:web:b482c2e4a0b85d12e4a430",
-    measurementId: "G-Y3D6M8YEB9"
-})
+import firebaseCredentials from './firebaseCredentials.json'
+
+firebase.initializeApp(firebaseCredentials)
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -123,10 +117,10 @@ function ChatMessage(props) {
     const activeCups = []
     for (let i = 0; i < 5; i++){
         if (i>=cups){
-            activeCups.push(<span role={'img'} className={'half-transparent'} aria-label={'coffee cup'}>☕</span>)
+            activeCups.push(<span role={'img'} key={i} className={'half-transparent'} aria-label={'coffee cup'}>☕</span>)
             continue
         }
-        activeCups.push(<span role={'img'} aria-label={'coffee cup'}>☕</span>)
+        activeCups.push(<span role={'img'} key={i} aria-label={'coffee cup'}>☕</span>)
     }
 
 
@@ -135,7 +129,6 @@ function ChatMessage(props) {
             <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt={'profile'}/>
             <p>
                 {cups === 5?
-
                     <div>Congratulations! You can get a free cup whenever you want!</div>
                     :
                     <div>You need to get {5-cups} more cup{5-cups === 1? null: 's'} for a free coffee!</div>
