@@ -4,7 +4,8 @@ const initialState = {
     cups: 0,
     freeCupsGot: 0,
     uid: '',
-    photoURL: ''
+    photoURL: '',
+    role: 'user'
 }
 
 const reducer = (state = initialState, action) => {
