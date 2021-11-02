@@ -22,7 +22,8 @@ function SignIn() {
               uid,
               photoURL,
               cups: 0,
-              freeCupsGot: 0
+              freeCupsGot: 0,
+              role: 'user'
           })
   }
 
