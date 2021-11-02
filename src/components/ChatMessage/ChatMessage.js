@@ -1,4 +1,3 @@
-
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -25,10 +24,11 @@ function ChatMessage(props) {
           <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt={'profile'}/>
           <p>
               {cups === 5?
-                  <div>Congratulations! You can get a free cup whenever you want!</div>
+                  <span>Congratulations! You can get a free cup whenever you want!</span>
                   :
-                  <div>You need to get {5-cups} more cup{5-cups === 1? null: 's'} for a free coffee!</div>
+                  <span>You need to get {5-cups} more cup{5-cups === 1? null: 's'} for a free coffee!</span>
               }
+              <br/>
               {activeCups}
           </p>
       </div>
