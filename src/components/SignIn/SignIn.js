@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import firebaseCredentials from '../../fireBaseCredentials.json'
+import firebaseCredentials from '../../credentials/firebaseCredentials.json'
 firebase.initializeApp(firebaseCredentials)
 
 const auth = firebase.auth();
