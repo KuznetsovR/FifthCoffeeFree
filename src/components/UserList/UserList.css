@@ -1,0 +1,13 @@
+.user{
+  padding: 10px;
+  color: white;
+  background-color: #2b303b;
+}
+ul{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+li{
+  text-align: center;
+}

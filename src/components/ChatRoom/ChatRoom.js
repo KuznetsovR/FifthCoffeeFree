@@ -8,13 +8,13 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import {connect} from "react-redux";
 import {addCup, setCups, setState} from "../../state/cupsAmount.actions";
-
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
 function ChatRoom(props) {
-    const { uid } = auth.currentUser;
+    let { uid } = auth.currentUser;
+    console.log(uid, props.uid)
     const doc = firestore.collection('users').doc(uid)
     const [userData] = useDocumentData(doc);
     props.onSetState(userData)

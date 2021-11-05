@@ -16,14 +16,16 @@ function SignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const loginInfo = await auth.signInWithPopup(provider);
       const { uid, photoURL } = auth.currentUser;
-
       if (loginInfo.additionalUserInfo.isNewUser) await usersRef
           .doc(uid).set({
+              fullName: auth.currentUser.displayName,
+              email: auth.currentUser.email,
               uid,
               photoURL,
               cups: 0,
               freeCupsGot: 0,
-              role: 'user'
+              role: 'user',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           })
   }
 
