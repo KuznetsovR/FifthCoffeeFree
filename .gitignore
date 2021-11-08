@@ -66,5 +66,5 @@ node_modules/
 # dotenv environment variables file
 .env
 
-src/credentials/firebaseCredentials.json
+src/credentials/fireBaseCredentials.json
 .idea/
