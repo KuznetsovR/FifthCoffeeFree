@@ -7,46 +7,24 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 
 import ChatMessage from '../ChatMessage/ChatMessage';
 import {connect} from "react-redux";
-import {addCup, setCups, setState} from "../../state/cupsAmount.actions";
+import {setState} from "../../state/cupsAmount.actions";
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
 function ChatRoom(props) {
     let { uid } = auth.currentUser;
-    console.log(uid, props.uid)
     const doc = firestore.collection('users').doc(uid)
     const [userData] = useDocumentData(doc);
     props.onSetState(userData)
 
-    const addCup = () => {
-        doc.update({
-            cups: props.cups + 1,
-        })
-}
 
-  const getFreeCup = () => {
-      if (props.cups !== 5) return;
-      doc.update({
-          cups: 0,
-          freeCupsGot: props.freeCupsGot + 1,
-      })
-  }
 
-return (<>
-  <main>
-      {props.cups !== undefined && props.cups !== null ? <ChatMessage userData={props} />: null}
-  </main>
-
-    {
-        props.role === 'admin'
-            ?<div className="btns-container">
-                <button className="btn" disabled={props?.cups === 5} onClick={addCup}>Add cup</button>
-                <button className="btn" disabled={props?.cups !== 5} onClick={getFreeCup}>Get free cup</button>
-            </div>
-            : null
-    }
-</>)
+    return (
+        <main>
+            {props.cups !== undefined && props.cups !== null ? <ChatMessage userData={props} />: null}
+        </main>
+    )
 }
 
 function mapStateToProps(state) {
@@ -60,8 +38,6 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        onAdd: () => dispatch(addCup()),
-        onSetCups: (newAmount) => dispatch(setCups(newAmount)),
         onSetState: (newState) => dispatch(setState(newState)),
     }
 }

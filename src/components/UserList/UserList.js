@@ -7,18 +7,18 @@ import './UserList.css'
 const firestore = firebase.firestore();
 
 
-function UserList(props) {
+function UserList() {
     const usersRef = firestore.collection('users')
     const query = usersRef.orderBy('createdAt').limit(100)
     const [usersCollection] = useCollectionData(query, {idField: 'uid'})
     const [currentUser, setCurrentUser] = useState(null);
     return(
-        <div>
+        <div className='user-list'>
             {usersCollection
                 ?
                 currentUser?
                     <>
-                        <button onClick={() => setCurrentUser(null)}>go back</button>
+                        <button onClick={() => setCurrentUser(null)} className='go-back-btn'>Go back</button>
                         <AdminActionsOnUser user={currentUser}/>
                     </>
                     :
