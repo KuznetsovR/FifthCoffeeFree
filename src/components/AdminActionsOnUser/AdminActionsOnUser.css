@@ -1,3 +1,12 @@
 .user-extended {
     color: #fff;
 }
+.cup-action{
+    margin: 10px;
+    border: 0;
+    color: white;
+    background: #181919;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

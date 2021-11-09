@@ -27,14 +27,13 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
   background-color: rgb(40, 37, 53);
 }
 
 main {
   padding: 10px;
   height: 80vh;
-  margin-top: 10vh;
   display: flex;
   flex-direction: column;
 }
@@ -42,14 +41,6 @@ main {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-
-.sign-in {
-  color: #282c34;
-  background: white;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 ul, li {

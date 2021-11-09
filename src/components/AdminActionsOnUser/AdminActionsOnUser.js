@@ -43,8 +43,8 @@ function AdminActionsOnUser(props){
             <div>
                 Free cups got: {props.freeCupsGot}
             </div>
-            <button onClick={addCup} disabled={props.cups >= 5}>Add cup</button>
-            <button onClick={getFreeCup} disabled={props.cups !== 5}>Get free cup</button>
+            <button onClick={addCup} disabled={props.cups >= 5} className='cup-action'>Add cup</button>
+            <button onClick={getFreeCup} disabled={props.cups !== 5} className='cup-action'>Get free cup</button>
         </div>
 
     )
