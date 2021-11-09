@@ -1,7 +1,25 @@
-{
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
-  "rules": {
-    ".read": false,
-    ".write": false
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    match /{document=**} {
+      allow read: if request.auth.uid != null;
+      allow write: if canCreateAndEditCups();
+      allow create: if request.auth.uid != null
+    }
+  	
+    match /users/{docId} {
+    	allow read: if request.auth.uid != null;
+      allow write: if canCreateAndEditCups();
+      // request.resource.data.role == 'admin'
+    }
+    
+    
+    function canCreateAndEditCups(){
+      let isSignedIn = request.auth.uid != null;
+      let isAdmin = request.auth.uid == 'OL6B4Lsbe3ZaDBdTZYgw5G7A9bt1' || request.auth.uid == 'aKdWqHb4YIYNqBF4I59xMf8Cqsl1';
+      return isSignedIn && isAdmin
+    }
+    
   }
 }
