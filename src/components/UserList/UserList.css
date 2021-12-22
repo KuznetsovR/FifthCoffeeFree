@@ -1,5 +1,9 @@
 .go-back-btn{
-  background: #8696ba;
+  padding: 5px 10px;
+  border: 0;
+  background: #e5e5ea;
+  border-radius: 5px;
+  margin: 30px 0 5px 0 ;
 }
 .user{
   padding: 10px;
